@@ -6,12 +6,22 @@ public class Player : MonoBehaviour
 {
     public CapsuleCollider playerCollider;
     public float moveSpeed = 5f;
+
+    private GameObject enemy; // This identifies the enemy and allows to access the gameobject
+    private Enemy enemyScript; // This is to get the script attached to the enemy gameobject
+
+
     // Start is called before the first frame update
     void Start()
     {
         playerCollider = GetComponent<CapsuleCollider>();
         playerCollider.height = 1.0f;
         playerCollider.center = new Vector3(0f,0.5f,0f);
+        
+        // Assign the gameobject to the enemy variable we created
+        enemy = GameObject.Find("Battle_Dummy");
+        // Assign the enemy script to the script variable we created so we can access it in code
+        enemyScript = enemy.GetComponent<Enemy>();
     }
 
     // Update is called once per frame
@@ -26,6 +36,11 @@ public class Player : MonoBehaviour
 
         //Move the player, allows the movement to be smooth using Time.deltatime
         transform.Translate(movement * Time.deltaTime * moveSpeed);
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            enemyScript.enemyHealth--;
+        }
 
     }
 }
