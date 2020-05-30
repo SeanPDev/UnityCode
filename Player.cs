@@ -7,8 +7,13 @@ public class Player : MonoBehaviour
     public CapsuleCollider playerCollider;
     public float moveSpeed = 5f;
 
-    private GameObject enemy; // This identifies the enemy and allows to access the gameobject
+    //private GameObject enemy; // This identifies the enemy and allows to access the gameobject
     private Enemy enemyScript; // This is to get the script attached to the enemy gameobject
+
+    private RaycastHit hit; // holds the value of what the ray hit
+    private Ray ray; // hold info about the ray we are casting out
+    public float rayDistance = 4f;
+
 
 
     // Start is called before the first frame update
@@ -19,9 +24,9 @@ public class Player : MonoBehaviour
         playerCollider.center = new Vector3(0f,0.5f,0f);
         
         // Assign the gameobject to the enemy variable we created
-        enemy = GameObject.Find("Battle_Dummy");
+        //enemy = GameObject.Find("Battle_Dummy");
         // Assign the enemy script to the script variable we created so we can access it in code
-        enemyScript = enemy.GetComponent<Enemy>();
+        //enemyScript = enemy.GetComponent<Enemy>();
     }
 
     // Update is called once per frame
@@ -37,11 +42,17 @@ public class Player : MonoBehaviour
         //Move the player, allows the movement to be smooth using Time.deltatime
         transform.Translate(movement * Time.deltaTime * moveSpeed);
 
-        if(Input.GetKeyDown(KeyCode.Space))
+
+
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Enemy")
         {
+            enemyScript = collision.gameObject.GetComponent<Enemy>();
             enemyScript.enemyHealth--;
         }
-
     }
 }
 
